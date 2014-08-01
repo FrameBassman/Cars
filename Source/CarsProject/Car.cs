@@ -10,74 +10,72 @@
         /// <summary>
         /// This value is displayed how much speed increases
         /// </summary>
-        protected readonly int Delta = 20;
+        private const int Delta = 20;
 
         /// <summary>
         /// This value is displayed max speed for car
         /// </summary>
-        protected readonly int MaxSpeed = 200;
+        private const int MaxSpeed = 200;
 
         /// <summary>
         /// This value is displayed min speed for car
         /// </summary>
-        protected readonly int MinSpeed = 0;
+        private const int MinSpeed = 0;
 
         /// <summary>
         /// This value is displayed speed of car
         /// </summary>
-        public int Speed = 0;
+        public int Speed { get; private set; }
 
-        #endregion
-
-        #region Constructor
-
-        public Car()
-        {
-            this.Speed = 0;
-        }
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Method for accelerate speed of car
+        /// Method for accelerate speed of car, throws exception if speed is out from limit
         /// </summary>
-        /// <param name="car">Car object</param>
-        /// <returns>Returns code of error</returns>
-        public int UpSpeed()
+        public void UpSpeed()
         {
-            this.Speed += this.Delta;
-            return this.ValidateSpeed(this);
+            if (this.ValidateSpeed(this.Speed + Delta))
+            {
+                this.Speed += Delta;
+            }
+            else
+            {
+                throw new OutLimitOfSpeedException("Motor is crashed");
+            }
         }
 
         /// <summary>
-        /// Method for decelerate speed of car
+        /// Method for decelerate speed of car, throws exception if speed is out from limit
         /// </summary>
-        /// <param name="car">Car object</param>
-        /// <returns>Returns code of error</returns>
-        public int DownSpeed()
+        public void DownSpeed()
         {
-            this.Speed -= this.Delta;
-            return this.ValidateSpeed(this);
+            if (this.ValidateSpeed(this.Speed - Delta))
+            {
+                this.Speed -= Delta;
+            }
+            else
+            {
+                throw new OutLimitOfSpeedException("Car is stopped");
+            }
         }
 
         /// <summary>
-        /// This method verifies that Speed of Car has correct value
+        /// This method returns true if speed is valid
         /// </summary>
-        /// <param name="car">Car object</param>
-        /// <returns>Returns 0 if speed correct, 1 if speed more than maximal speed, -1 if speed less than minimal speed</returns>
-        private int ValidateSpeed(Car car)
+        private bool ValidateSpeed(int speed)
         {
-            if (car.Speed > car.MaxSpeed)
+            if (speed > MaxSpeed)
             {
-                throw new SpeedMoreThanMaximumException();
+                return false;
             }
-            if (car.Speed < car.MinSpeed)
+            if (speed < MinSpeed)
             {
-                throw new SpeedLessThanMinimumException();
+                return false;
             }
 
-            return 0;
+            return true;
         }
 
         #endregion

@@ -1,12 +1,13 @@
 ﻿namespace CarsProject
 {
+    using System.Globalization;
     using System.Windows.Forms;
 
     using CarsProject.Exceptions;
 
     public partial class MainForm : Form
     {
-        Car car = new Car();
+        private Car car;
 
         public MainForm()
         {
@@ -15,7 +16,8 @@
 
         private void MainFormLoad(object sender, System.EventArgs e)
         {
-            this.SpeedLabel.Text = car.Speed.ToString();
+            car = new Car();
+            UpadteMainForm(car);
         }
 
         private void BreakButtonClick(object sender, System.EventArgs e)
@@ -25,10 +27,9 @@
                 car.DownSpeed();
                 this.UpadteMainForm(car);
             }
-            catch (SpeedLessThanMinimumException sltme)
+            catch (OutLimitOfSpeedException olose)
             {
-                car.UpSpeed();
-                MessageBox.Show(sltme.Message);
+                MessageBox.Show(olose.Message);
             }
         }
 
@@ -39,16 +40,15 @@
                 car.UpSpeed();
                 this.UpadteMainForm(car);
             }
-            catch (SpeedMoreThanMaximumException smtme)
+            catch (OutLimitOfSpeedException olose)
             {
-                car.DownSpeed();
-                MessageBox.Show(smtme.Message);
+                MessageBox.Show(olose.Message);
             }
         }
 
-        private void UpadteMainForm(Car car)
+        private void UpadteMainForm(Car currentCar)
         {
-            SpeedLabel.Text = car.Speed.ToString();
+            SpeedLabel.Text = currentCar.Speed.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
