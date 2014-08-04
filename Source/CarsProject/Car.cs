@@ -1,10 +1,23 @@
-﻿namespace CarsProject
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Car.cs" company="Noname">
+//   
+// </copyright>
+// <summary>
+//   The car.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace CarsProject
 {
+    using System.Collections.Generic;
+
     using CarsProject.Exceptions;
 
+    /// <summary>
+    /// The car.
+    /// </summary>
     public class Car
     {
-
         #region Fields
 
         /// <summary>
@@ -23,7 +36,7 @@
         private const int MinSpeed = 0;
 
         /// <summary>
-        /// This value is displayed speed of car
+        /// Get speed of current car
         /// </summary>
         public int Speed { get; private set; }
 
@@ -64,21 +77,45 @@
         /// <summary>
         /// This method returns true if speed is valid
         /// </summary>
+        /// <param name="speed">
+        /// The speed of car
+        /// </param>
+        /// <returns>
+        /// Returns true if speed is valid <see cref="bool"/>.
+        /// </returns>
         private bool ValidateSpeed(int speed)
         {
-            if (speed > MaxSpeed)
-            {
-                return false;
-            }
-            if (speed < MinSpeed)
-            {
-                return false;
-            }
-
-            return true;
+            return speed < MaxSpeed && speed > MinSpeed;
         }
 
         #endregion
 
+        #region Events
+
+        /// <summary>
+        /// The car engine handler.
+        /// </summary>
+        /// <param name="messageForCaller">
+        /// The message for caller.
+        /// </param>
+        public delegate void CarEngineHandler(string messageForCaller);
+
+        /// <summary>
+        /// The list of handlers.
+        /// </summary>
+        private CarEngineHandler listOfHandlers;
+
+        /// <summary>
+        /// The register with car engine.
+        /// </summary>
+        /// <param name="methodToCall">
+        /// The method to call.
+        /// </param>
+        public void RegisterWithCarEngine(CarEngineHandler methodToCall)
+        {
+            this.listOfHandlers = methodToCall;
+        }
+
+        #endregion
     }
 }
