@@ -9,8 +9,6 @@
 
 namespace CarsProject
 {
-    using System.Collections.Generic;
-
     using CarsProject.Exceptions;
 
     /// <summary>
@@ -36,7 +34,7 @@ namespace CarsProject
         private const int MinSpeed = 0;
 
         /// <summary>
-        /// Get speed of current car
+        /// Gets speed of current car
         /// </summary>
         public int Speed { get; private set; }
 
@@ -52,6 +50,10 @@ namespace CarsProject
             if (this.ValidateSpeed(this.Speed + Delta))
             {
                 this.Speed += Delta;
+                if (this.SpeedChanged != null)
+                {
+                    this.SpeedChanged.Invoke();
+                }
             }
             else
             {
@@ -67,6 +69,10 @@ namespace CarsProject
             if (this.ValidateSpeed(this.Speed - Delta))
             {
                 this.Speed -= Delta;
+                if (this.SpeedChanged != null)
+                {
+                    this.SpeedChanged.Invoke();
+                }
             }
             else
             {
@@ -85,7 +91,7 @@ namespace CarsProject
         /// </returns>
         private bool ValidateSpeed(int speed)
         {
-            return speed < MaxSpeed && speed > MinSpeed;
+            return speed <= MaxSpeed && speed >= MinSpeed;
         }
 
         #endregion
@@ -93,28 +99,14 @@ namespace CarsProject
         #region Events
 
         /// <summary>
-        /// The car engine handler.
+        /// 
         /// </summary>
-        /// <param name="messageForCaller">
-        /// The message for caller.
-        /// </param>
-        public delegate void CarEngineHandler(string messageForCaller);
+        public delegate void SpeedChangedEventHandler();
 
         /// <summary>
-        /// The list of handlers.
+        /// This event rised when speed changed.
         /// </summary>
-        private CarEngineHandler listOfHandlers;
-
-        /// <summary>
-        /// The register with car engine.
-        /// </summary>
-        /// <param name="methodToCall">
-        /// The method to call.
-        /// </param>
-        public void RegisterWithCarEngine(CarEngineHandler methodToCall)
-        {
-            this.listOfHandlers = methodToCall;
-        }
+        public event SpeedChangedEventHandler SpeedChanged;
 
         #endregion
     }

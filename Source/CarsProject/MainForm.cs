@@ -9,6 +9,7 @@
 
 namespace CarsProject
 {
+    using System;
     using System.Globalization;
     using System.Windows.Forms;
 
@@ -44,7 +45,8 @@ namespace CarsProject
         private void MainFormLoad(object sender, System.EventArgs e)
         {
             this.car = new Car();
-            this.UpdateMainForm(this.car);
+            car.SpeedChanged += OnSpeedChanged;
+            this.UpdateMainForm(car);
         }
 
         /// <summary>
@@ -61,7 +63,6 @@ namespace CarsProject
             try
             {
                 this.car.DownSpeed();
-                this.UpdateMainForm(this.car);
             }
             catch (OutLimitOfSpeedException exception)
             {
@@ -83,7 +84,6 @@ namespace CarsProject
             try
             {
                 this.car.UpSpeed();
-                this.UpdateMainForm(this.car);
             }
             catch (OutLimitOfSpeedException exception)
             {
@@ -100,6 +100,15 @@ namespace CarsProject
         private void UpdateMainForm(Car currentCar)
         {
             this.SpeedLabel.Text = currentCar.Speed.ToString(CultureInfo.InvariantCulture);
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public virtual void OnSpeedChanged()
+        {
+            this.UpdateMainForm(this.car);
         }
     }
 }
