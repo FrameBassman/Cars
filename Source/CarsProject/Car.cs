@@ -6,33 +6,45 @@
     using CarsProject.Exceptions;
 
     /// <summary>
-    ///     The car.
+    /// The car which can ride, change speed and color.
     /// </summary>
     public class Car
     {
         #region Constants
 
         /// <summary>
-        ///     This value is displayed how much speed increases
+        /// This value is displayed how much speed increases.
         /// </summary>
         private const int Delta = 20;
 
         /// <summary>
-        ///     This value is displayed max speed for car
+        /// This value is displayed max speed for car.
         /// </summary>
         private const int MaxSpeed = 200;
 
         /// <summary>
-        ///     This value is displayed min speed for car
+        /// This value is displayed min speed for car.
         /// </summary>
         private const int MinSpeed = 0;
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Prevents a default instance of the <see cref="Car"/> class from being created.
+        /// </summary>
+        private Car()
+        {
+            this.Color = KnownColor.ActiveBorder;
+        }
 
         #endregion
 
         #region Public Events
 
         /// <summary>
-        ///     This event rised when speed changed.
+        /// This event raised when speed changed.
         /// </summary>
         public event EventHandler SpeedChanged;
 
@@ -41,12 +53,12 @@
         #region Public Properties
 
         /// <summary>
-        ///     Gets colour of current car
+        /// Gets color of current car.
         /// </summary>
-        public KnownColor Colour { get; private set; }
+        public KnownColor Color { get; private set; }
 
         /// <summary>
-        ///     Gets speed of current car
+        /// Gets speed of current car.
         /// </summary>
         public int Speed { get; private set; }
 
@@ -54,14 +66,11 @@
 
         #region Public Methods and Operators
 
-        public void ChangeColour(KnownColor color)
+        public void ChangeColor(KnownColor color)
         {
-            this.Colour = color;
+            this.Color = color;
         }
 
-        /// <summary>
-        ///     Method for decelerate speed of car, throws exception if speed is out from limit
-        /// </summary>
         public void DownSpeed()
         {
             if (this.ValidateSpeed(this.Speed - Delta))
@@ -78,9 +87,6 @@
             }
         }
 
-        /// <summary>
-        ///     Method for accelerate speed of car, throws exception if speed is out from limit
-        /// </summary>
         public void UpSpeed()
         {
             if (this.ValidateSpeed(this.Speed + Delta))
@@ -97,19 +103,17 @@
             }
         }
 
+        private static Car instance;
+
+        public static Car GetInstance()
+        {
+            return instance ?? (instance = new Car());
+        }
+
         #endregion
 
         #region Methods
 
-        /// <summary>
-        ///     This method returns true if speed is valid
-        /// </summary>
-        /// <param name="speed">
-        ///     The speed of car
-        /// </param>
-        /// <returns>
-        ///     Returns true if speed is valid <see cref="bool" />.
-        /// </returns>
         private bool ValidateSpeed(int speed)
         {
             return speed <= MaxSpeed && speed >= MinSpeed;
