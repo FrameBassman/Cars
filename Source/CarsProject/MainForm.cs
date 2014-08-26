@@ -1,7 +1,6 @@
 ﻿namespace CarsProject
 {
     using System;
-    using System.Collections.Generic;
     using System.Drawing;
     using System.Globalization;
     using System.Linq;
@@ -14,10 +13,6 @@
     /// </summary>
     public partial class MainForm : Form
     {
-        #region Fields
-
-        #endregion
-
         #region Constructors and Destructors
 
         /// <summary>
@@ -32,6 +27,15 @@
 
         #region Public Methods and Operators
 
+        /// <summary>
+        /// Called when speed is changed event occurs.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="eventArgs">
+        /// The <see cref="EventArgs"/> instance containing the event data.
+        /// </param>
         public virtual void OnSpeedChanged(object sender, EventArgs eventArgs)
         {
             this.UpdateMainForm();
@@ -41,6 +45,15 @@
 
         #region Methods
 
+        /// <summary>
+        /// Called when user clicks on Break button.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="EventArgs"/> instance containing the event data.
+        /// </param>
         private void BreakButtonClick(object sender, EventArgs e)
         {
             try
@@ -53,6 +66,30 @@
             }
         }
 
+        /// <summary>
+        /// Called when ColorDropDown list is created.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="EventArgs"/> instance containing the event data.
+        /// </param>
+        private void ColorDropDownCreated(object sender, EventArgs e)
+        {
+            // todo: check tolist.
+            this.ColorDropDownList.DataSource = Enum.GetValues(typeof(KnownColor)).Cast<KnownColor>().ToList();
+        }
+
+        /// <summary>
+        /// Called when user changes selected index from ColorDropDown list.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="EventArgs"/> instance containing the event data.
+        /// </param>
         private void ColorDropDownListSelectedIndexChanged(object sender, EventArgs e)
         {
             KnownColor color = Color.FromName(this.ColorDropDownList.SelectedItem.ToString()).ToKnownColor();
@@ -60,18 +97,15 @@
             this.UpdateMainForm();
         }
 
-
-        private void ColorDropDownCreated(object sender, EventArgs e)
-        {
-            var availableColors = new List<KnownColor>();
-            foreach (KnownColor color in Enum.GetValues(typeof(KnownColor)).Cast<KnownColor>())
-            {
-                availableColors.Add(color);
-            }
-            this.ColorDropDownList.DataSource = availableColors;
-        }
-
-
+        /// <summary>
+        /// Called when user clicks on Gas button.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="EventArgs"/> instance containing the event data.
+        /// </param>
         private void GasButtonClick(object sender, EventArgs e)
         {
             try
@@ -84,17 +118,26 @@
             }
         }
 
-
+        /// <summary>
+        /// Loads <see cref="MainForm"/>.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The <see cref="EventArgs"/> instance containing the event data.
         /// </param>
         private void MainFormLoad(object sender, EventArgs e)
         {
             Car currentCar = Car.GetInstance();
             currentCar.SpeedChanged += this.OnSpeedChanged;
-            this.ColorPictureBox.BackColor = Color.FromKnownColor(currentCar.Color);
+
             this.UpdateMainForm();
         }
 
-
+        /// <summary>
+        /// Updates <see cref="MainForm"/>.
+        /// </summary>
         private void UpdateMainForm()
         {
             Car currentCar = Car.GetInstance();
