@@ -60,25 +60,10 @@
             {
                 Car.GetInstance().DownSpeed();
             }
-            catch (OutLimitOfSpeedException exception)
+            catch (OutLimitOfSpeedException)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show("The car is stopped.");
             }
-        }
-
-        /// <summary>
-        /// Called when ColorDropDown list is created.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The <see cref="EventArgs"/> instance containing the event data.
-        /// </param>
-        private void ColorDropDownCreated(object sender, EventArgs e)
-        {
-            // todo: check tolist.
-            this.ColorDropDownList.DataSource = Enum.GetValues(typeof(KnownColor)).Cast<KnownColor>().ToList();
         }
 
         /// <summary>
@@ -112,9 +97,9 @@
             {
                 Car.GetInstance().UpSpeed();
             }
-            catch (OutLimitOfSpeedException exception)
+            catch (OutLimitOfSpeedException)
             {
-                MessageBox.Show(exception.Message);
+                MessageBox.Show("The motor is crashed.");
             }
         }
 
@@ -132,7 +117,7 @@
             Car currentCar = Car.GetInstance();
             currentCar.SpeedChanged += this.OnSpeedChanged;
 
-            this.UpdateMainForm();
+            this.ColorDropDownList.DataSource = Enum.GetValues(typeof(KnownColor)).Cast<KnownColor>().ToList();
         }
 
         /// <summary>

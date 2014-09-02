@@ -75,7 +75,6 @@
             this.ColorDropDownList.Size = new System.Drawing.Size(120, 21);
             this.ColorDropDownList.TabIndex = 3;
             this.ColorDropDownList.SelectedIndexChanged += new System.EventHandler(this.ColorDropDownListSelectedIndexChanged);
-            this.ColorDropDownList.HandleCreated += new System.EventHandler(this.ColorDropDownCreated);
             // 
             // ColorPictureBox
             // 
