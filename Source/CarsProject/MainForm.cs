@@ -99,6 +99,7 @@
             }
             catch (OutLimitOfSpeedException)
             {
+                CarManager.Save(Car.GetInstance());
                 MessageBox.Show("The motor is crashed.");
             }
         }
@@ -114,7 +115,11 @@
         /// </param>
         private void MainFormLoad(object sender, EventArgs e)
         {
-            Car currentCar = Car.GetInstance();
+            Car currentCar = CarManager.Load();
+            if (currentCar == null)
+            {
+                currentCar = Car.GetInstance();
+            }
             currentCar.SpeedChanged += this.OnSpeedChanged;
 
             this.ColorDropDownList.DataSource = Enum.GetValues(typeof(KnownColor)).Cast<KnownColor>().ToList();

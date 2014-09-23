@@ -2,13 +2,15 @@
 {
     using System;
     using System.Drawing;
+    using System.Runtime.Serialization;
 
     using CarsProject.Exceptions;
 
     /// <summary>
     /// The car which can ride, change speed and color.
     /// </summary>
-    public class Car
+    [Serializable()]
+    public class Car : ISerializable
     {
         #region Constants
 
@@ -46,6 +48,12 @@
         private Car()
         {
             this.Color = KnownColor.ActiveBorder;
+        }
+
+        public Car(SerializationInfo info, StreamingContext ctxt)
+        {
+            this.Speed = (int)info.GetValue("Speed", typeof(int));
+            this.Color = (KnownColor)info.GetValue("Color", typeof(KnownColor));
         }
 
         #endregion
@@ -160,5 +168,11 @@
         }
 
         #endregion
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("Speed", this.Speed);
+            info.AddValue("Color", this.Color);
+        }
     }
 }
